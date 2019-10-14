@@ -1,0 +1,86 @@
+<!doctype html>
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<div class="row jumbotron" style="margin-bottom: 0rem; padding: 1rem; background-color: #563d7c">
+    <div class="col-lg-10" style="color: #fff">
+        <h3 class="text-left">Employee Management System</h3>
+    </div>
+</div>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/employee">Employee</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/project">Project</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/task">Task</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/operations" sec:authorize="hasRole('ROLE_admin')">Operations</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Action</a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="/logout">Logout</a>
+                </div>
+            </li>
+        </ul>
+        <ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
+            <span class="navbar-text">
+                <b>/Operations</b>
+            </span>
+        </ul>
+    </div>
+</nav>
+<div class="container mt-4 col-lg-8">
+    <form name="task-form" th:action="@{/assign}" method="post">
+        <div class="form-group row">
+                <label class="col-4 col-form-label pb-2">Employee :</label>
+                <select class="browser-default custom-select col-8 pb-2" id="eid" name="eid">
+                    <option selected>Select Employee</option>
+                    <option th:each="employee : ${employees}"
+                    th:value="${employee.eid}"
+                    th:utext="${employee.ename}"/>
+                </select>
+            <label class="col-4 col-form-label pb-2">Project :</label>
+            <select class="col-8 browser-default custom-select pb-2" id="pid" name="pid">
+                <option selected>Select Project</option>
+                <option th:each="project : ${projects}"
+                        th:value="${project.id}"
+                        th:utext="${project.projectName}"/>
+            </select>
+            <label class="col-12 col-form-label pb-2">Tasks :</label>
+            <div class="col-6 input-group mb-3 pb-2" th:each="task : ${tasks}">
+                <div class="input-group-prepend">
+                    <div class="input-group-text" >
+                        <input type="checkbox" aria-label="Checkbox for following text input" th:value="${task.id}" name="tid">
+                    </div>
+                </div>
+                <label type="text" class="form-control" aria-label="Text input with checkbox" th:text="${task.taskName}" readonly></label>
+            </div>
+        </div>
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Create</button>
+        <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Cancel</button>
+    </form>
+</div>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!doctype html>
+<html xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<div class="row jumbotron" style="margin-bottom: 0rem; padding: 1rem; background-color: #563d7c">
+    <div class="col-lg-10" style="color: #fff">
+        <h3 class="text-left">Employee Management System</h3>
+    </div>
+    <div class="col-lg-2">
+        <h6 sec:authorize="isAuthenticated()" class="text-left" style="padding-top: 10px; color: #fff">Welcome <span sec:authentication="name"></span></h6>
+    </div>
+</div>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/employee">Employee <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/project">Project</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/task">Task</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/operations" sec:authorize="hasRole('ROLE_admin')">Operations</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Action</a>
+                <div class="dropdown-menu">
+                    <a class="dropdown-item" href="/logout">Logout</a>
+                </div>
+            </li>
+        </ul>
+        <ul class="navbar-nav flex-row ml-md-auto d-none d-md-flex">
+            <span class="navbar-text">
+                <b>/Employee/Project Info</b>
+            </span>
+        </ul>
+    </div>
+</nav>
+<div class="container mt-4 col-lg-8">
+    <div class="form-group row">
+        <label class="col-4 col-form-label pb-4 text-right">Employee Id:</label>
+        <input type="text"  class="form-control col-6" id="empid" name="empid" th:value="${employee.eid}" readonly>
+
+        <label class="col-4 col-form-label pb-2 text-right pb-4">Employee Name:</label>
+        <input type="text"  class="form-control col-6" id="empName" name="empName" th:value="${employee.ename}" readonly>
+
+        <label class="col-4 col-form-label pb-2 text-right pb-4">Employee Email:</label>
+        <input type="text"  class="form-control col-6" id="email" name="email" th:value="${employee.email}" readonly>
+
+        <label class="col-4 col-form-label pb-2 text-right pb-4">Employee Contact:</label>
+        <input type="text"  class="form-control col-6" id="empcontact" name="empcontact" th:value="${employee.contact}" readonly>
+
+    </div>
+</div>
+
+<div class="container mt-4 col-lg-8">
+    <table class="table table-striped mt-2">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Name</th>
+            <th scope="col">Project Id</th>
+            <th scope="col">Project Name</th>
+            <th scope="col">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="project:${projects}">
+            <th scope="row"><span th:text="${project.id}"></span></th>
+            <td><span th:text="${project.projectName}"></span></td>
+            <td><span th:text="${project.ProjectDes}"></span></td>
+            <td><span th:text="${project.projectClient}"></span></td>
+            <td><button class="btn btn-outline-success my-2 my-sm-0" type="submit"><a th:href="@{'/employees/' + ${employee.eid}+'/projects/'+${project.id}+'/tasks'}" >More</a></button></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
